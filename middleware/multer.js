@@ -11,7 +11,7 @@ if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && proce
     api_secret: process.env.CLOUDINARY_API_SECRET,
     secure: true
   });
-  console.log('Cloudinary configured successfully');
+  // console.log('Cloudinary configured successfully');
 } else {
   console.warn('Cloudinary credentials not found. Image uploads will not work properly.');
   console.warn('Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in your .env file');
@@ -36,6 +36,8 @@ const storage = new CloudinaryStorage({
     eager_notification_url: process.env.CLOUDINARY_NOTIFICATION_URL
   }
 });
+
+
 
 
 

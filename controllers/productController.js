@@ -215,17 +215,11 @@ exports.getProducts = async (req, res) => {
       .skip(skip)
       .limit(limitNum);
     
-    // Optimize image URLs for better performance
+    // Return products without URL optimization to fix image display
     const optimizedProducts = products.map(product => {
       const optimizedProduct = product.toObject();
-      if (optimizedProduct.srcUrl) {
-        optimizedProduct.srcUrl = optimizeCloudinaryUrl(optimizedProduct.srcUrl, { width: 600, height: 600 });
-      }
-      if (optimizedProduct.gallery && optimizedProduct.gallery.length > 0) {
-        optimizedProduct.gallery = optimizedProduct.gallery.map(url => 
-          optimizeCloudinaryUrl(url, { width: 300, height: 300 })
-        );
-      }
+      // Keep original URLs to ensure they work
+      // console.log('Product:', optimizedProduct.title, 'srcUrl:', optimizedProduct.srcUrl);
       return optimizedProduct;
     });
       
