@@ -27,24 +27,6 @@ npm install
 ```
 
 ### 2. Environment Variables
-Create a `.env` file in the root directory with the following variables:
-
-```env
-# Server Configuration
-PORT=5000
-NODE_ENV=development
-
-# Database Configuration
-MONGODB_URI=mongodb://localhost:27017/clothing-store
-
-# Cloudinary Configuration
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-CLOUDINARY_UPLOAD_FOLDER=clothing-store
-
-# File Upload Configuration
-MAX_FILE_UPLOAD=5242880
 ```
 
 ### 3. Start the Server
