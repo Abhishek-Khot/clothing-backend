@@ -17,9 +17,7 @@ const deleteCloudinaryImage = async (imageUrl) => {
     const fullPublicId = `${folder}/${publicId}`;
     
     const result = await cloudinary.uploader.destroy(fullPublicId);
-    console.log(`Deleted image from Cloudinary: ${fullPublicId}`, result.result);
   } catch (error) {
-    console.error('Error deleting image from Cloudinary:', error);
     // Don't throw error to prevent blocking the main operation
   }
 };
@@ -30,19 +28,34 @@ const optimizeCloudinaryUrl = (url, options = {}) => {
   
   try {
     const { width, height, crop = 'fill', quality = 'auto:good' } = options;
-    const baseUrl = url.split('/upload/')[0] + '/upload/';
-    const path = url.split('/upload/')[1];
     
-    if (!path) return url; // If no path found, return original URL
+    // Check if URL already has transformations
+    if (url.includes('/upload/f_auto,q_auto:good')) {
+      return url;
+    }
     
+    // Parse the Cloudinary URL properly
+    const urlParts = url.split('/upload/');
+    if (urlParts.length !== 2) {
+      return url;
+    }
+    
+    const baseUrl = urlParts[0] + '/upload/';
+    const path = urlParts[1];
+    
+    if (!path) {
+      return url;
+    }
+    
+    // Build transformations
     let transformations = `f_auto,q_auto:good`;
     if (width && height) {
       transformations += `,w_${width},h_${height},c_${crop}`;
     }
     
-    return `${baseUrl}${transformations}/${path}`;
+    const optimizedUrl = `${baseUrl}${transformations}/${path}`;
+    return optimizedUrl;
   } catch (error) {
-    console.error('Error optimizing Cloudinary URL:', error, 'Original URL:', url);
     return url; // Return original URL if optimization fails
   }
 };
@@ -219,7 +232,6 @@ exports.getProducts = async (req, res) => {
     const optimizedProducts = products.map(product => {
       const optimizedProduct = product.toObject();
       // Keep original URLs to ensure they work
-      // console.log('Product:', optimizedProduct.title, 'srcUrl:', optimizedProduct.srcUrl);
       return optimizedProduct;
     });
       
@@ -254,20 +266,25 @@ exports.getProduct = async (req, res) => {
       });
     }
     
-    // Optimize image URLs for better performance
-    const optimizedProduct = product.toObject();
-    if (optimizedProduct.srcUrl) {
-      optimizedProduct.srcUrl = optimizeCloudinaryUrl(optimizedProduct.srcUrl, { width: 800, height: 800 });
+    // Return product without URL optimization to ensure images work
+    const productData = product.toObject();
+    
+    // For now, return the original URLs without optimization
+    // TODO: Fix optimizeCloudinaryUrl function and re-enable optimization
+    /*
+    if (productData.srcUrl) {
+      productData.srcUrl = optimizeCloudinaryUrl(productData.srcUrl, { width: 800, height: 800 });
     }
-    if (optimizedProduct.gallery && optimizedProduct.gallery.length > 0) {
-      optimizedProduct.gallery = optimizedProduct.gallery.map(url => 
+    if (productData.gallery && productData.gallery.length > 0) {
+      productData.gallery = productData.gallery.map(url => 
         optimizeCloudinaryUrl(url, { width: 400, height: 400 })
       );
     }
+    */
     
     res.status(200).json({
       success: true,
-      data: optimizedProduct
+      data: productData
     });
   } catch (error) {
     res.status(500).json({ 
