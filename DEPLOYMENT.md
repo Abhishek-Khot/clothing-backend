@@ -12,17 +12,17 @@ MONGODB_URI=your_mongodb_connection_string
 
 ### Render
 - Build Command: `npm install`
-- Start Command: `npm start`
+- Start Command: `node server.js`
 - Environment: Node.js
 
 ### Heroku
 - Build Command: `npm install`
-- Start Command: `npm start`
+- Start Command: `node server.js`
 - Environment: Node.js
 
 ### Vercel
 - Build Command: `npm install`
-- Start Command: `npm start`
+- Start Command: `node server.js`
 - Environment: Node.js
 
 ## File Structure
