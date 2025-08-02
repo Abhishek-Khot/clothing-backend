@@ -32,11 +32,8 @@ npm install
 ### 3. Start the Server
 ```bash
 # Development mode with nodemon
-npm run dev
-
-# Production mode
-npm start
-```
+node server.js
+nodemon server.js
 
 ## API Endpoints
 
