@@ -32,7 +32,8 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Enable CORS for frontend
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+// app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(require('cors')({ origin: ['http://localhost:3000', 'https://unique-collection-web.onrender.com'], credentials: true }));
 
 // Set up static files
 app.use(express.static(path.join(__dirname, 'public')));
